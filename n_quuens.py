@@ -35,10 +35,10 @@ class NQueensBacktracking:
             return True
         #this version of isSafe uses list comprehension and any() function
         #it uses the enumerate() function to get the index of the previous queen
-        def isSafe_v3(self, possible_solution: list[int]) -> bool:
+    def isSafe_v3(self, possible_solution: list[int]) -> bool:
             # Get candidate queen position (last in list)
-            candidate_queen_col = len(possible_solution) - 1
-            candidate_queen_row = possible_solution[candidate_queen_col]
+            candidate_queen_col = possible_solution[-1]
+            candidate_queen_row =  len(possible_solution) - 1
 
             # Check all previous queens using list comprehension and any()
             # The any() function returns True if at least one element of an iterable is true.
@@ -48,14 +48,14 @@ class NQueensBacktracking:
             # in a form of enumerate object.
             # It allows us to loop over a list and have an automatic counter/index with it.
             safe = not any(
-                prev_row == candidate_queen_row or                     # Check if the previous queen is in the same row
-                abs(prev_row - candidate_queen_row) == abs(i - candidate_queen_col)  # Check if the previous queen is in the same diagonal
-                for i, prev_row in enumerate(possible_solution[:-1])  # Iterate over the previous queens with their indices,
+                col == candidate_queen_col or                     # Check if the previous queen is in the same row
+                abs(col - candidate_queen_col) == abs(index_row - candidate_queen_row)  # Check if the previous queen is in the same diagonal
+                for index_row, col in enumerate(possible_solution[:-1])  # Iterate over the previous queens with their indices,
             )
 
             return safe
 
-        def isSafe_v4(self, possible_solution: list[int]) -> bool:
+    def isSafe_v4(self, possible_solution: list[int]) -> bool:
             # Check if the last placed queen is in the same column as any previous queen
             same_column = possible_solution[-1] in possible_solution[:-1]
 
@@ -79,7 +79,11 @@ class NQueensBacktracking:
                 if self.isSafe(possible_solution):
                     self.solve(possible_solution)
                 possible_solution.pop()
-    def print_board(self)
+    def print_board_one_solution(self,index:int)->None:
+         solution=[(index,content) for index,content in enumerate(self.result[index])]
+         for _,col in solution:
+                print('.  '*(col)+'Q'+'.  '*(self.n-col-1))
+
 #Test
 if __name__ == "__main__":
     n=int(input('Enter an integer'))
@@ -88,3 +92,5 @@ if __name__ == "__main__":
     print(f'There is {len(nqb.result)} possible solutions.')
     print('List of possible solutions :')
     print(nqb.result)
+    index=int(input('Enter an index of a slotion to print the board'))
+    nqb.print_board_one_solution(index)
